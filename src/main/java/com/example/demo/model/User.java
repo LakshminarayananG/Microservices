@@ -32,7 +32,11 @@ public class User {
     private int id;
     @NotNull(message="Name is required ba")
     @Size(min=2, max=10, message="Name should between 2 and 10 in size")
+
+
     private String name;
+
+
 
     private LocalDate dob;
 
