@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.model.User;
 import com.example.demo.service.UserNotFoundException;
 import com.example.demo.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -56,8 +57,13 @@ public class UserController {
     }
 
     //Add a new user
+
+    /*
+
+    @Valid is necessary to validate the checks given as part of User model (NotNull, size checks)
+     */
     @PostMapping(path="/employees")
-    public ResponseEntity<User> addUser(@RequestBody User user){
+    public ResponseEntity<User> addUser(@Valid @RequestBody User user){
 
         User newUser = userService.createUser(user);
         if (newUser==null) {
@@ -80,7 +86,7 @@ public class UserController {
     }
 
     //Updating a userId
-    @PutMapping(path="/employees/{userId}",consumes = "application/json", produces = "application/json")
+    @PutMapping(path="/employees/{userId}", produces = "application/json")
     public ResponseEntity<User> updateUser(@PathVariable int userId, @RequestBody User user){
         if(user.getName()==null) return ResponseEntity.internalServerError().body(user);
         User updatedUser = userService.updateUser(userId,user);
