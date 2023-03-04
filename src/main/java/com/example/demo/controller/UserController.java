@@ -35,7 +35,7 @@ public class UserController {
         return "Welcome to Java Spring Boot";
     }
 
-    @GetMapping(path="/employees")
+    @GetMapping(path="/employees",produces = "application/json")
     public List<User> getEmployees(){
        // EmployeeService employeeService = new EmployeeService();
         return userService.getAllEmplmoyees();
