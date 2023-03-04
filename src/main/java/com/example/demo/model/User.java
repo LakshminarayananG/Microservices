@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -28,7 +29,8 @@ public class User {
     @Size => To ensure the size of the name is between 2 to 10
      */
 
-    @NotNull(message="ID can't be null")
+    //@NotNull(message="ID can't be null")
+    @JsonIgnore
     private int id;
     @NotNull(message="Name is required ba")
     @Size(min=2, max=10, message="Name should between 2 and 10 in size")
