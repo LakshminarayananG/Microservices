@@ -1,9 +1,10 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.User;
+import com.example.demo.service.UserJPAService;
 import com.example.demo.service.UserNotFoundException;
-import com.example.demo.service.UserService;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -18,17 +19,16 @@ import java.util.List;
 import java.util.Locale;
 
 @RestController
-public class UserController {
-
-
+@RequestMapping("/api/jpa")
+@Slf4j
+public class UserJPAController {
     @Autowired
-    UserService userService;
-
+    UserJPAService userJPAService;
     @Autowired
     MessageSource messageSource;
 
-    public UserController(UserService userService){
-        this.userService = userService;
+    public UserJPAController(UserJPAService userService){
+        this.userJPAService = userService;
     }
 
     @RequestMapping(path="/api/message", method = RequestMethod.GET)
@@ -39,7 +39,7 @@ public class UserController {
     @GetMapping(path="/employees",produces = "application/json")
     public List<User> getEmployees(){
        // EmployeeService employeeService = new EmployeeService();
-        return userService.getAllEmplmoyees();
+        return userJPAService.getAllEmplmoyees();
     }
 
 
@@ -48,7 +48,7 @@ public class UserController {
     @GetMapping(path="/employees/{id}")
     public User getOneUser(@PathVariable int id) {
         Locale locale = LocaleContextHolder.getLocale();
-        User empl = userService.getUser(id);
+        User empl = userJPAService.getUser(id);
         System.out.println("Im here"+ empl);
         if(empl==null){
             throw new UserNotFoundException(messageSource.getMessage("error.userNotFound",null,"Default Error Message",locale));
@@ -65,7 +65,7 @@ public class UserController {
     @PostMapping(path="/employees")
     public ResponseEntity<User> addUser(@Valid @RequestBody User user){
 
-        User newUser = userService.createUser(user);
+        User newUser = userJPAService.createUser(user);
         if (newUser==null) {
             return ResponseEntity.internalServerError().body(newUser);
         }
@@ -81,7 +81,7 @@ public class UserController {
     //Deleting a user
     @DeleteMapping(path="/employees/{userId}")
     public ResponseEntity<Object> deleteUser(@PathVariable int userId){
-        userService.deleteUser(userId);
+        userJPAService.deleteUser(userId);
         return ResponseEntity.noContent().build();
     }
 
@@ -89,7 +89,7 @@ public class UserController {
     @PutMapping(path="/employees/{userId}", produces = "application/json")
     public ResponseEntity<User> updateUser(@PathVariable int userId, @RequestBody User user){
         if(user.getName()==null) return ResponseEntity.internalServerError().body(user);
-        User updatedUser = userService.updateUser(userId,user);
+        User updatedUser = userJPAService.updateUser(userId,user);
         if(updatedUser==null){
             return ResponseEntity.internalServerError().body(updatedUser);
         }
@@ -118,7 +118,7 @@ public class UserController {
     @PatchMapping(path="/employeespatch/{userId}",consumes = "application/json", produces = "application/json")
     public ResponseEntity<User> updateSpecificUserPartially(@PathVariable int userId, @RequestBody User user)
     {
-        User patchUser = userService.updateUserPartially(userId, user);
+        User patchUser = userJPAService.updateUserPartially(userId, user);
         if(patchUser==null)
             throw new UserNotFoundException("user with id "+ userId+" not found");
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("").buildAndExpand(patchUser.getId()).toUri();
@@ -131,7 +131,7 @@ public class UserController {
     @GetMapping(path="/getuserqueryparam",
             produces = "application/json")
 public ResponseEntity<User> getSpecificUserQuery(@RequestParam("name") String name){
-        User user = userService.getUserByName(name);
+        User user = userJPAService.getUserByName(name);
         if(user==null) throw new UserNotFoundException("user with name "+ name+" not found");
         return ResponseEntity.ok().body(user);
     }
@@ -141,7 +141,7 @@ public ResponseEntity<User> getSpecificUserQuery(@RequestParam("name") String na
     @GetMapping(path="/getuserqueryparamId",
             produces = "application/json")
     public ResponseEntity<User> getSpecificUserQueryId(@RequestParam("userId") int userId){
-        User user = userService.getUser(userId);
+        User user = userJPAService.getUser(userId);
         if(user==null) throw new UserNotFoundException("user with ID "+ userId+" not found");
         return ResponseEntity.ok().body(user);
     }
@@ -151,7 +151,7 @@ public ResponseEntity<User> getSpecificUserQuery(@RequestParam("name") String na
     @GetMapping(path="/getuserqueryparamIdMime",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> getSpecificUserQueryIdmime(@RequestParam("userId") int userId){
-        User user = userService.getUser(userId);
+        User user = userJPAService.getUser(userId);
         if(user==null) throw new UserNotFoundException("user with ID "+ userId+" not found");
         return ResponseEntity.ok().body(user);
     }
@@ -161,7 +161,7 @@ public ResponseEntity<User> getSpecificUserQuery(@RequestParam("name") String na
     @GetMapping(path="/usersByQueryParams",
             produces = "application/json")
     public ResponseEntity getAllUsersByQueryParam(@RequestParam("name") String name){
-        User user = UserService.getUserByName(name);
+        User user = UserJPAService.getUserByName(name);
         Locale locale = LocaleContextHolder.getLocale();
         if(user==null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(messageSource.getMessage("user.not.found",null,locale));
         return new ResponseEntity<User>(user, HttpStatus.OK);
