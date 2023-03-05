@@ -3,6 +3,8 @@ package com.example.demo.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -34,6 +36,11 @@ public class User {
     @NotNull(message="ID can't be null")
    // @JsonIgnore
     //The JSONIgnore tag will ignore this tag in the response and print the rest of the response.
+
+    /*
+    @GeneratedValue helps in auto generating the index values. there are different strategies though.
+     */
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
     @NotNull(message="Name is required ba")
     @Size(min=2, max=10, message="Name should between 2 and 10 in size")
