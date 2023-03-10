@@ -106,6 +106,7 @@
     <orderEntry type="library" name="Maven: io.swagger.core.v3:swagger-core:2.2.7" level="project" />
     <orderEntry type="library" name="Maven: io.swagger.core.v3:swagger-annotations:2.2.7" level="project" />
     <orderEntry type="library" name="Maven: io.swagger.core.v3:swagger-models:2.2.7" level="project" />
+    <orderEntry type="library" name="Maven: com.mysql:mysql-connector-j:8.0.32" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-data-jpa:3.1.0-M1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-aop:3.1.0-M1" level="project" />
     <orderEntry type="library" name="Maven: org.aspectj:aspectjweaver:1.9.19" level="project" />

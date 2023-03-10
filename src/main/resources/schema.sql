@@ -1,0 +1,1 @@
+create table if not exists user_details (id int not null, address varchar(255), dob date, name varchar(10) not null, resp_msg varchar(255));
