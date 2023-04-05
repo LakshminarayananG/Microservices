@@ -44,13 +44,13 @@ public class UserJPAService {
     // requirements : request body, context url, headers
 
     public User createUser(User user) {
-//        User newUser = User.builder().id(users.size()+1).name(user.getName()).dob(user.getDob()).build();
-//         newUser.setId(++id); // Add id like this also work
-//         newUser.setId(users.size()+1); // This will also work
-//        users.add(newUser);
-//        return newUser;
-        User save = userJPARepository.save(user);
-        return save;
+        User newUser = User.builder().id(users.size()+1).name(user.getName()).dob(user.getDob()).build();
+         newUser.setId(++id); // Add id like this also work
+         newUser.setId(users.size()+1); // This will also work
+        users.add(newUser);
+        return newUser;
+   //     User save = userJPARepository.save(user);
+     //   return save;
 
 
     }
@@ -71,19 +71,19 @@ public class UserJPAService {
     // delete a user
     public void deleteUser(int userId){
 
-        //users.removeIf(x->x.getId()==userId);
-        userJPARepository.deleteById(id);
+     users.removeIf(x->x.getId()==userId);
+   //     userJPARepository.deleteById(id);
     }
 
 
     // update a empmloyee
     public User updateUser(int userId, User user) {
-//        User actualUser = getUser(userId);
-//        if(user==null || actualUser==null) throw new UserNotFoundException("User with id: "+id+" not found");
-//        actualUser.setName(user.getName());
-//        actualUser.setDob(user.getDob());
-//        return actualUser;
-        return userJPARepository.save(user);
+        User actualUser = getUser(userId);
+        if(user==null || actualUser==null) throw new UserNotFoundException("User with id: "+id+" not found");
+        actualUser.setName(user.getName());
+        actualUser.setDob(user.getDob());
+        return actualUser;
+       // return userJPARepository.save(user);
     }
 
 
